@@ -8,8 +8,8 @@ While enjoying tacos and margaritas, Llama should try to avoid any cacti taht co
 Be the Llama. Be HUNGRY. Eat tacos. Drink margaritas.
 
 Creators:
-Frank Sundstedt
-Ally Brannon
+Frank Sundstedt,
+Ally Brannon,
 Jennifer Morales
 
 Github:
