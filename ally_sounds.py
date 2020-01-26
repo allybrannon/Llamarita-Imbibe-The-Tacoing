@@ -118,7 +118,7 @@ def show_go_screen():
                 waiting = False
             
 
-background = pygame.image.load(path.join(img_dir, 'daytime.png')).convert()
+background = pygame.image.load(path.join(img_dir, 'Daytime_Background_1024x800.png')).convert()
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 background_rect = background.get_rect()
 player_img = pygame.image.load(path.join(img_dir, 'llama.png')).convert()
