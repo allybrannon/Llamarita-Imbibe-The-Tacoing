@@ -20,12 +20,12 @@ BROWN = (100, 40, 0)
 
 #Game info
 
-WIN = 2
+WIN = 15
 taco_count = 0
 
 #Title
 
-TITLE = "Hungry Llama"
+TITLE = "Llamarita's Taco Adventure"
 
 #Player size
 
@@ -38,7 +38,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption(TITLE)
 clock = pygame.time.Clock()
 
-font_name = pygame.font.match_font('arial')
+font_name = pygame.font.match_font('inkfree')
 def draw_text(surf, text, size, x, y):
     font = pygame.font.Font(font_name, size)
     text_surface = font.render(text, True, BLACK)
@@ -139,10 +139,10 @@ class Cactus(Mob):
 
 def show_go_screen():
     screen.blit(background, background_rect)
-    draw_text(screen, TITLE, 64, WIDTH / 2, HEIGHT / 4)
-    draw_text(screen, "Arrow keys move", 22,
+    draw_text(screen, TITLE, 50, WIDTH / 2, HEIGHT / 4)
+    draw_text(screen, "Arrow keys move", 25,
               WIDTH / 2, HEIGHT / 2)
-    draw_text(screen, "Press space to begin", 18, WIDTH / 2, HEIGHT * 3 / 4)
+    draw_text(screen, "Press space to begin", 25, WIDTH / 2, HEIGHT * 3 / 4)
     pygame.display.flip()
     waiting = True
     while waiting:
@@ -156,10 +156,27 @@ def show_go_screen():
 
 def winning_screen():
     screen.blit(background, background_rect)
-    draw_text(screen, "You Win!!!", 50, WIDTH / 2, HEIGHT * 1 / 4)
-    draw_text(screen, "Total Score:", 50, WIDTH / 2, HEIGHT / 2)
+    draw_text(screen, "You Win! Hangover Avoided!", 50, WIDTH / 2, HEIGHT * 1 / 4)
+    draw_text(screen, "Taco Count:", 50, WIDTH / 2, HEIGHT / 2)
     draw_text(screen, str(taco_count), 50, WIDTH * 3 / 4, HEIGHT / 2)    
-    draw_text(screen, "Press space to continue", 18, WIDTH / 2, HEIGHT * 3 / 4)
+    draw_text(screen, "Press space to continue", 25, WIDTH / 2, HEIGHT * 3 / 4)
+    pygame.display.flip()
+    waiting = True
+    while waiting:
+        clock.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_SPACE:
+                    waiting = False
+
+def losing_screen():
+    screen.blit(background, background_rect)
+    draw_text(screen, "You lost! Enjoy the hangover!", 50, WIDTH / 2, HEIGHT * 1 / 4)
+    draw_text(screen, "Taco Count:", 50, WIDTH / 2, HEIGHT / 2)
+    draw_text(screen, str(taco_count), 50, WIDTH * 3 / 4, HEIGHT / 2)    
+    draw_text(screen, "Press space to continue", 25, WIDTH / 2, HEIGHT * 3 / 4)
     pygame.display.flip()
     waiting = True
     while waiting:
@@ -198,14 +215,19 @@ pygame.mixer.music.play(loops = -1)
 
 # Game loop
 game_win = False
+game_lose = False
 game_over = True
 running = True
 while running:
     if game_over:
         if game_win == True:
             winning_screen()
+        if game_lose == True:
+            losing_screen()
         show_go_screen()
         game_over = False
+        game_win = False
+        game_lose = False
         all_sprites = pygame.sprite.Group()
         mobs = pygame.sprite.Group()
         margs = pygame.sprite.Group()
@@ -256,6 +278,7 @@ while running:
         all_sprites.add(m)
         cactus.add(m)
         if health == 1:
+            game_lose = True
             game_over = True
         else:
             health -= 1
@@ -292,9 +315,11 @@ while running:
     #lives counter
     draw_lives(screen, WIDTH - 200, 5, health, llama_mini_img)
     #score counter
-    draw_text(screen, str(score), 30, WIDTH / 2, 10)
+    draw_text(screen, 'Taco Score:', 20, WIDTH / 2, 10)
+    draw_text(screen, str(score), 20, WIDTH / 2 + 75, 10)
     #mararita counter
-    draw_text(screen, str(marg_counter), 30, WIDTH / 2 - 200, 10)
+    draw_text(screen, str(WIN - marg_counter), 20, WIDTH / 2 - 150, 10)
+    draw_text(screen, 'Margaritas to go:', 20, WIDTH / 2 - 250, 10)
     #health counter
     #draw_text(screen, str(health), 30, WIDTH / 2 + 200, 10)
     pygame.draw.rect(background, BROWN,(0,HEIGHT-60,WIDTH,60))
