@@ -80,6 +80,26 @@ class Mob(pygame.sprite.Sprite):
             self.rect.y = random.randrange(-100, -40)
             self.speedy = random.randrange(1, 8)
 
+class Marg(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((30, 40))
+        self.image = pygame.transform.scale(marg_img, (75,75))
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randrange(WIDTH - self.rect.width)
+        self.rect.y = random.randrange(-100, -40)
+        self.speedy = random.randrange(1, 8)
+        self.speedx = random.randrange(-3, 3)
+
+    def update(self):
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+        if self.rect.top > HEIGHT + 10 or self.rect.left < -25 or self.rect.right > WIDTH + 20:
+            self.rect.x = random.randrange(WIDTH - self.rect.width)
+            self.rect.y = random.randrange(-100, -40)
+            self.speedy = random.randrange(1, 8)
+
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -101,9 +121,11 @@ background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 background_rect = background.get_rect()
 player_img = pygame.image.load(path.join(img_dir, 'llama.png')).convert()
 taco_img = pygame.image.load(path.join(img_dir, 'taco.png')).convert()
+marg_img = pygame.image.load(path.join(img_dir, 'margarita.png')).convert()
 
 all_sprites = pygame.sprite.Group()
 mobs = pygame.sprite.Group()
+margs = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 player = Player()
 all_sprites.add(player)
@@ -111,6 +133,12 @@ for i in range(8):
     m = Mob()
     all_sprites.add(m)
     mobs.add(m)
+
+for i in range(8):
+    n = Marg()
+    all_sprites.add(n)
+    margs.add(n)
+
 score = 0
 
 # Game loop
